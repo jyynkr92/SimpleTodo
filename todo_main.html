@@ -1,0 +1,141 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Simple Todo List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <!-- <script src="main.js"></script> -->
+    <script>
+        window.onload = function() {
+            //getTodoList("todo");
+            //getTodoList("done");
+            setKeyEvent();
+            setEvent();
+        }
+
+        function getTodoList(mode, content, colorType) {
+            var target = "";
+
+            if (mode === "todo") {
+                target = document.getElementById("todoList");
+            } else {
+                target = document.getElementById("doneList");
+            }
+
+            var trElement = document.createElement("tr");
+            var thElement = document.createElement("th");
+            var tdElement = document.createElement("td");
+            var spanElement = document.createElement("span");
+            
+            spanElement.className = "circle";
+            spanElement.style.backgroundColor = colorType;
+            thElement.appendChild(spanElement);
+            tdElement.textContent = content;
+            
+            trElement.appendChild(thElement);
+            trElement.appendChild(tdElement);
+
+            target.appendChild(trElement);
+        }
+
+        function setEvent() {
+            document.getElementById("addBtn").addEventListener("click", addTodo);
+            document.getElementById("colorType").addEventListener("click", openColorList);
+            
+            var colorList = document.getElementById("colorList").getElementsByClassName("circle");
+
+            HTMLCollection.prototype.forEach = Array.prototype.forEach;
+
+            colorList.forEach(function(item, index) {
+                item.addEventListener("click", changeColor);
+            });
+        }
+
+        function addTodo() {
+            var content = document.getElementById("todoContent").value;
+            content = content.trim();
+
+            if (content == null || content === "") {
+                alert("you did'nt write what you should do.");
+                return;
+            }
+            var colorId = document.getElementById("colorType");
+            var colorStyle = window.getComputedStyle(colorId);
+            var colorType = colorStyle.backgroundColor;
+
+            var data = {
+                content : content,
+                colorType : colorType
+            }
+
+            getTodoList("todo", content, colorType);
+            document.getElementById("todoContent").value = "";
+        }
+
+        function setKeyEvent() {
+            // Get the input field
+            var input = document.getElementById("todoContent");
+
+            // Execute a function when the user releases a key on the keyboard
+            input.addEventListener("keyup", function(event) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Number 13 is the "Enter" key on the keyboard
+                if (event.keyCode === 13) {
+                    // Trigger the button element with a click
+                    addTodo();
+                }
+            });     
+        }
+
+        function openColorList() {
+            var colorDisplay = document.getElementById("colorList").style.display;
+
+            if (colorDisplay == "inline-block") {
+                document.getElementById("colorList").style.display = "none";
+            } else {
+                document.getElementById("colorList").style.display = "inline-block";
+            }
+        }
+
+        function changeColor() {
+            var className = this.className;
+
+            className = className.substring(7);
+            
+            document.getElementById("colorType").className = "color_type " + className;
+
+            openColorList();
+            
+        }
+    </script>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <hr>
+    <div class="intro_content">Please write what you should do</div>
+    <div class="todo_box">
+        <span class="color_type purple" id="colorType"></span>
+        <div class="color_set" id="colorList">
+            <span class="circle red"></span>
+            <span class="circle yellow"></span>
+            <span class="circle green"></span>
+            <span class="circle blue"></span>
+            <span class="circle purple"></span>
+        </div>
+        <div class="todo_content"><input type="text" class="todo_input" id="todoContent"><button class="addBtn" id="addBtn">add</button></div>
+    </div>    
+    <div class="todo_now">
+        <span>What you should do!</span>
+        <hr>
+        <table id="todoList"></table>
+    </div>
+    <div class="todo_now">
+        <span>What you've done!</span>
+        <hr>
+        <table id="doneList"></table>
+    </div>
+</body>
+</html>
