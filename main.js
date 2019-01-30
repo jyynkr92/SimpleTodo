@@ -1,8 +1,9 @@
 "use strict"
 
 var doubleCheck = true;
+var todoId = 0;
 
-function getTodoList(mode, content, colorType) {
+function getTodoList(mode, content, colorType, oldId) {
     var target = "";
 
     if (mode === "todo") {
@@ -20,6 +21,15 @@ function getTodoList(mode, content, colorType) {
     spanElement.style.backgroundColor = colorType;
     thElement.appendChild(spanElement);
     tdElement.textContent = content;
+
+    if (mode === "todo") {
+        trElement.id = "todo" + todoId;
+        //function todoDone is only worked in todoList
+        spanElement.addEventListener("click", todoDone);
+        todoId++;
+    } else{
+        trElement.id = oldId;
+    }
 
     trElement.appendChild(thElement);
     trElement.appendChild(tdElement);
@@ -43,7 +53,7 @@ function setEvent() {
 function addTodo() {
     var content = document.getElementById("todoContent").value;
     content = content.trim();
-    console.log(content);
+
     if (content == null || content === "") {
         alert("you did'nt write what you should do.");
         return;
@@ -94,4 +104,15 @@ function changeColor() {
     document.getElementById("colorType").className = "color_type " + className;
 
     openColorList();
+}
+
+function todoDone() {
+    var todoId = this.parentElement.parentElement.id;
+    var todoElem = document.getElementById(todoId);
+    var content = todoElem.querySelector("td").innerText;
+    var colorType = window.getComputedStyle(this);
+    colorType = colorType.backgroundColor;
+
+    todoElem.parentElement.removeChild(todoElem);
+    getTodoList("done", content, colorType, todoId);
 }

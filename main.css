@@ -1,3 +1,5 @@
+body {text-align:center;}
+h1 {text-align:left;}
 .intro_content {text-align:center;margin:10px 0px;}
 .color_type {width:15px;height:50px;background-color:rgb(184, 109, 255); border:1px solid #d9d9d9; float:left;}
 .todo_content {height:50px; width:80%;border:1px solid #d9d9d9;background-color:lemonchiffon}
@@ -22,7 +24,7 @@ button{
   }
 button:hover{
     background:#fff;
-    color:rgb(101, 26, 171);
+    color:#b7abdc;
 }
 button:before,button:after{
     content:'';
@@ -31,7 +33,7 @@ button:before,button:after{
     right:0;
     height:2px;
     width:0;
-    background: rgb(101, 26, 171);
+    background: #b7abdc;
     transition:400ms ease all;
   }
   button:after{
@@ -52,3 +54,7 @@ button:before,button:after{
   .green {background-color:rgb(128, 255, 128)}
   .blue {background-color:rgb(98, 122, 255)}
   .purple {background-color:rgb(184, 109, 255)}
+
+  #doneList tr td {text-decoration: line-through;}
+  table tr td {text-align : left;}
+  #todoList tr th span {cursor: pointer;}
